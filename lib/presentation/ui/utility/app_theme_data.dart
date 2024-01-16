@@ -11,6 +11,8 @@ class AppThemeData{
         contentPadding: EdgeInsets.symmetric(vertical: 8,
             horizontal: 16),
         hintStyle: TextStyle(color: Colors.grey.shade400),
+        fillColor: Colors.transparent.withOpacity(0),
+
         border: OutlineInputBorder(
             borderSide: BorderSide(
               color: AppColors.primaryColor,
@@ -53,6 +55,11 @@ class AppThemeData{
       style: TextButton.styleFrom(
         foregroundColor: AppColors.primaryColor,
       )
+    ),
+    appBarTheme: AppBarTheme(
+      titleTextStyle: TextStyle(fontSize: 18,color: Colors.black),
+      backgroundColor: Colors.white,
+      elevation: 5
     )
   );
 }
