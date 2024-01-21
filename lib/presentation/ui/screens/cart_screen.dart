@@ -1,6 +1,5 @@
 import 'package:cafty_bay/presentation/state_holder/main_bottom_nav_controller.dart';
 import 'package:cafty_bay/presentation/ui/utility/app_colors.dart';
-import 'package:cafty_bay/presentation/ui/utility/assets_path.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

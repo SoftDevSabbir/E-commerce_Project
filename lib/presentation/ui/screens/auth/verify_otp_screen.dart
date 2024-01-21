@@ -1,131 +1,153 @@
-import 'dart:async';
-import 'package:cafty_bay/presentation/ui/screens/auth/complete_profile_screen.dart';
-import 'package:cafty_bay/presentation/ui/utility/app_colors.dart';
-import 'package:cafty_bay/presentation/ui/widgets/app_logo.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../../../state_holder/verify_otp_controller.dart';
+import '../../utility/app_colors.dart';
+import '../../widgets/app_logo.dart';
+import '../../widgets/center_circular_progress_indicator.dart';
+import '../main_bottom_nav_screen.dart';
+import 'complete_profile_screen.dart';
 
-class VerifyOtpScreen extends StatefulWidget {
-  VerifyOtpScreen({super.key});
+class VerifyOTPScreen extends StatefulWidget {
+  const VerifyOTPScreen({super.key, required this.email});
+
+  final String email;
 
   @override
-  State<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
+  State<VerifyOTPScreen> createState() => _VerifyOTPScreenState();
 }
 
-class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
-
-  final otpTimer = const Duration(seconds: 1);
-  int otpCount = 120;
-
-  void otpCountDown() {
-    Timer.periodic(otpTimer, (timer) {
-      if (otpCount == 0) {
-        timer.cancel();
-      }
-      otpCount--;
-      setState(() {});
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    otpCountDown();
-  }
+class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
+  final TextEditingController _otpTEController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(children: [
-              const SizedBox(
-                height: 160,
-              ),
-              AppLogo(
-                height: 80,
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Text(
-                "Enter OTP Code",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                "A 4 digits OTP code has been sent",
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              SizedBox(height: 16),
-              PinCodeTextField(
-                length: 4,
-                obscureText: false,
-                animationType: AnimationType.fade,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                pinTheme: PinTheme(
-                  selectedFillColor: Colors.white,
-                  inactiveFillColor: Colors.white,
-                  shape: PinCodeFieldShape.box,
-                  borderRadius: BorderRadius.circular(5),
-                  fieldHeight: 50,
-                  fieldWidth: 40,
-                  activeFillColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 120,
                 ),
-                animationDuration: Duration(milliseconds: 300),
-                enableActiveFill: true,
-                beforeTextPaste: (text) {
-                  print("Allowing to paste $text");
-                  return true;
-                },
-                appContext: context,
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              SizedBox(
+                const AppLogo(
+                  height: 80,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Text(
+                  'Enter OTP Code',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  'A 4 digit OTP code has been sent',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                PinCodeTextField(
+                  controller: _otpTEController,
+                  length: 4,
+                  obscureText: false,
+                  animationType: AnimationType.fade,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  keyboardType: TextInputType.number,
+                  pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.box,
+                      borderRadius: BorderRadius.circular(5),
+                      fieldHeight: 50,
+                      fieldWidth: 40,
+                      activeFillColor: Colors.transparent,
+                      inactiveFillColor: Colors.transparent,
+                      inactiveColor: AppColors.primaryColor,
+                      selectedFillColor: Colors.transparent,
+                      selectedColor: Colors.purple),
+                  animationDuration: const Duration(milliseconds: 300),
+                  backgroundColor: Colors.transparent,
+                  enableActiveFill: true,
+                  onCompleted: (v) {
+                    print("Completed");
+                  },
+                  appContext: context,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(onPressed: () {
-                    Get.to(const CompleteProfileScreen());
-                  }, child: Text("Next"))),
-            const SizedBox(height: 16),
-            Visibility(
-                visible: otpCount > 0,
-                replacement: Text(
-                  "OTP Validation Expired!",
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.red,
+                  child: GetBuilder<VerifyOTPController>(
+                      builder: (verifyOtpController) {
+                        return Visibility(
+                          visible: verifyOtpController.inProgress == false,
+                          replacement: const CenterCircularProgressIndicator(),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                final bool response = await verifyOtpController.verifyOTP(
+                                    widget.email, _otpTEController.text);
+                                if (response) {
+                                  if (verifyOtpController.shouldNavigateCompleteProfile) {
+                                    Get.to(() => CompleteProfileScreen());
+                                  } else {
+                                    Get.offAll(() => const MainBottomNavScreen());
+                                  }
+                                } else {
+                                  Get.showSnackbar(GetSnackBar(
+                                    title: 'OTP verification failed',
+                                    message: "something Wrong",
+                                    duration: const Duration(seconds: 2),
+                                    isDismissible: true,
+                                  ));
+                                }
+                              }
+                            },
+                            child: const Text('Next'),
+                          ),
+                        );
+                      }
                   ),
-                ), child:
-            RichText(
-                text:
-                TextSpan(style: TextStyle(color: Colors.grey), children: [
-                  TextSpan(text: 'This Code Will Expire on '),
-
-                  TextSpan(
-                      text: '${otpCount}s',
-                      style: TextStyle(
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ])),
-            ),
-
-
-              TextButton(
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                RichText(
+                  text: const TextSpan(
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                    children: [
+                      TextSpan(text: 'This code will expire '),
+                      // TODO - make this timer workable
+                      TextSpan(
+                        text: '120s',
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                TextButton(
                   onPressed: () {},
-                  child: Text(
-                    "Resend Code",
+                  child: const Text(
+                    'Resend Code',
                     style: TextStyle(color: Colors.grey),
-                  )),
-            ]),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

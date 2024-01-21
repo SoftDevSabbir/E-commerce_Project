@@ -1,4 +1,6 @@
+import 'package:cafty_bay/presentation/state_holder/auth_controller.dart';
 import 'package:cafty_bay/presentation/ui/screens/auth/verify_email_screen.dart';
+import 'package:cafty_bay/presentation/ui/screens/main_bottom_nav_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,8 +23,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void moveToNextScreen()async{
-    await Future.delayed(Duration(seconds: 2));
-    Get.offAll(const VerifyEmailScreen());
+    await Future.delayed(Duration(seconds: 1));
+    final bool isLoggedIn=await Get.find<AuthController>().isLoggedIn();
+    if(isLoggedIn){
+      Get.offAll(const MainBottomNavScreen());
+    }else{
+
+    }
+    Get.offAll( VerifyEmailScreen());
   }
 
   @override

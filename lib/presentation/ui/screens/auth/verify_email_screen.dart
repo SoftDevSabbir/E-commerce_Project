@@ -1,3 +1,4 @@
+import 'package:cafty_bay/presentation/state_holder/send_email_otp_controller.dart';
 import 'package:cafty_bay/presentation/ui/screens/auth/verify_otp_screen.dart';
 import 'package:cafty_bay/presentation/ui/widgets/app_logo.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class VerifyEmailScreen extends StatelessWidget {
-  const VerifyEmailScreen({super.key});
+  VerifyEmailScreen({super.key});
+  final TextEditingController _emailTEController = TextEditingController();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -14,37 +17,73 @@ class VerifyEmailScreen extends StatelessWidget {
         padding: const EdgeInsets.all(24.0),
         child: SingleChildScrollView(
           child: Center(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 160,
-                ),
-                AppLogo(
-                  height: 80,
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                Text(
-                  "Welcome back",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                SizedBox(height: 4,),
-                Text(
-                  "Please Enter Your Email Address",
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  decoration: InputDecoration(hintText: "Email"),
-                ),
-                const SizedBox(height: 16,),
-                SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(onPressed: (){
-                      Get.off(VerifyOtpScreen());
-                    }, child: Text("Next")))
-              ],
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 160,
+                  ),
+                  AppLogo(
+                    height: 80,
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Text(
+                    "Welcome back",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    "Please Enter Your Email Address",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    controller: _emailTEController,
+                    decoration: InputDecoration(hintText: "Email"),
+                    validator: (value) {
+                      if (value?.trim().isEmpty ?? true) {
+                        return "Enter Your Email";
+                      } else if (value?.trim().isEmpty ?? true) {}
+                    },
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  GetBuilder<SendEmailOtpController>(builder: (controller) {
+                    return SizedBox(
+                        width: double.infinity,
+                        child: Visibility(
+                          visible: controller.inProgress == false,
+                          replacement: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  final bool result =
+                                      await controller.sendOtpToEmail(
+                                          _emailTEController.text.trim());
+                                  if(result){
+                                    Get.to(()=>VerifyOTPScreen(email:_emailTEController.text.trim()));
+                                  }else{
+                                    Get.showSnackbar(GetSnackBar(title: "Send Otp faild",
+                                     message: controller.errorMessage,
+                                      duration: Duration(seconds: 2),
+                                      isDismissible: true,
+                                    ));
+                                  }
+                                }
+                              },
+                              child: Text("Next")),
+                        ));
+                  })
+                ],
+              ),
             ),
           ),
         ),
