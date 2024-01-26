@@ -1,10 +1,12 @@
+import 'package:cafty_bay/presentation/state_holder/category_controller.dart';
+import 'package:cafty_bay/presentation/state_holder/home_banner_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/main_bottom_nav_controller.dart';
 import 'package:cafty_bay/presentation/ui/screens/product_list_screen.dart';
 import 'package:cafty_bay/presentation/ui/utility/assets_path.dart';
+import 'package:cafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../utility/app_colors.dart';
 import '../widgets/category_item.dart';
 import '../widgets/home/circle_icon_button.dart';
 import '../widgets/home/section_tittle.dart';
@@ -31,7 +33,19 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 8),
               searchTextFeild,
               const SizedBox(height: 16),
-              BannerCarousel(),
+              SizedBox(
+                  height: 180,
+                  child: GetBuilder<HomeBannerController>(
+                    builder: (homeBannerController) {
+                      return Visibility(
+                          visible: homeBannerController.inProgress == false,
+                          replacement: const CenterCircularProgressIndicator(),
+                          child: BannerCarousel(
+                            bannerList:homeBannerController.bannerListModel.bannerList ?? [],
+                          ),
+                      );
+                    },
+                  )),
               const SizedBox(height: 8),
               SectionTittle(
                 tittle: "All Categories",
@@ -43,9 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
               SectionTittle(
                 tittle: "Popular",
                 onTapSeeAll: () {
-                  Get.to(()=>productListScreen());
+                  Get.to(() => productListScreen());
                 },
-
               ),
               ProductList,
               SectionTittle(
@@ -68,15 +81,25 @@ class _HomeScreenState extends State<HomeScreen> {
   SizedBox get CategoryList {
     return SizedBox(
       height: 115,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => CategoreiItem(),
-        itemCount: 10,
-        primary: false,
-        shrinkWrap: true,
-        separatorBuilder: (_, __) => const SizedBox(
-          width: 8,
-        ),
+      child: GetBuilder<CatergoryController>(
+        builder: (categoryController) {
+          return Visibility(
+            visible: categoryController.inProgress==false,
+            replacement: CenterCircularProgressIndicator(),
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => CategoryItem(
+                  category: categoryController.categoryListModel.categoryList![index],
+              ),
+              itemCount:categoryController.categoryListModel.categoryList?.length??0,
+              primary: false,
+              shrinkWrap: true,
+              separatorBuilder: (_, __) => const SizedBox(
+                width: 8,
+              ),
+            ),
+          );
+        }
       ),
     );
   }
@@ -84,14 +107,15 @@ class _HomeScreenState extends State<HomeScreen> {
   SizedBox get ProductList {
     return SizedBox(
       height: 155,
-
       child: ListView.separated(
         itemCount: 10,
         primary: false,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return const ProductCardItem(card_width: 117,);
+          return const ProductCardItem(
+            card_width: 117,
+          );
         },
         separatorBuilder: (_, __) {
           return const SizedBox(
@@ -148,6 +172,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-
-

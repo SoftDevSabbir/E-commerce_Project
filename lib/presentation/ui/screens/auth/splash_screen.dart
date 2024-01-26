@@ -28,9 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
     if(isLoggedIn){
       Get.offAll(const MainBottomNavScreen());
     }else{
-
+      Get.offAll( VerifyEmailScreen());
     }
-    Get.offAll( VerifyEmailScreen());
+
   }
 
   @override

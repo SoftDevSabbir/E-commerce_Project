@@ -1,15 +1,18 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/models/banner.dart';
 import '../utility/app_colors.dart';
 
 class BannerCarousel extends StatefulWidget {
   const BannerCarousel({
     super.key,
     this.height,
+    required this.bannerList,
   });
 
   final double? height;
+  final List<BannerItem> bannerList;
 
   @override
   State<BannerCarousel> createState() => _BannerCarouselState();
@@ -30,22 +33,65 @@ class _BannerCarouselState extends State<BannerCarousel> {
             },
             viewportFraction: 1,
             // enableInfiniteScroll: false,
-           // autoPlay: true,
+            //autoPlay: true,
           ),
-          items: [1, 2, 3, 4, 5].map((i) {
+          items: widget.bannerList.map((banner) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 1.0),
-                    decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(8)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'text $i',
-                      style: const TextStyle(fontSize: 16.0),
-                    ));
+                  margin: const EdgeInsets.symmetric(horizontal: 1.0),
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: AppColors.primaryColor,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.only(left: 15, bottom: 7, top: 4),
+                        child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    alignment: Alignment.center,
+                                    image: NetworkImage(banner.image ?? ""))),
+                            alignment: Alignment.center),
+                      )),
+                      const SizedBox(width: 12),
+                      Expanded(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            banner.title ?? "",
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20),
+                          ),
+                          const SizedBox(height: 7),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8)),
+                            height: 40,
+                            width: 120,
+                            child: const Center(
+                                child: Text(
+                              "Buy Now",
+                              style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.w500),
+                            )),
+                          )
+                        ],
+                      ))
+                    ],
+                  ),
+                );
               },
             );
           }).toList(),
@@ -59,7 +105,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (int i = 0; i < 5; i++)
+                  for (int i = 0; i < widget.bannerList.length; i++)
                     Container(
                       height: 12,
                       width: 12,

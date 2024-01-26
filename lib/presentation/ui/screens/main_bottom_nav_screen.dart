@@ -1,3 +1,4 @@
+import 'package:cafty_bay/presentation/state_holder/category_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/main_bottom_nav_controller.dart';
 import 'package:cafty_bay/presentation/ui/screens/cart_screen.dart';
 import 'package:cafty_bay/presentation/ui/screens/categories_screen.dart';
@@ -6,7 +7,11 @@ import 'package:cafty_bay/presentation/ui/screens/wishlist_screen.dart';
 import 'package:cafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+
+import '../../state_holder/home_banner_controller.dart';
 
 class MainBottomNavScreen extends StatefulWidget {
   const MainBottomNavScreen({super.key});
@@ -22,6 +27,13 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
     CartScreen(),
     WishListScreen()
   ];
+  @override
+  void initState() {
+    Get.find<HomeBannerController>().getBannerList();
+    Get.find<CatergoryController>().getCategoryList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<MainBottomNavController>(
