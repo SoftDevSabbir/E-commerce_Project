@@ -13,14 +13,16 @@ class CategoryItem extends StatelessWidget {
   });
   final Category category;
 
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         GestureDetector(
           onTap: () {
-            Get.to(() =>  productListScreen(
+            Get.to(() =>  ProductListScreen(
                   category: category.categoryName??'',
+              categoryId: category.id,
                 ));
           },
           child: Card(

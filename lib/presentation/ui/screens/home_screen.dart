@@ -1,12 +1,17 @@
+import 'package:cafty_bay/data/models/product_model.dart';
 import 'package:cafty_bay/presentation/state_holder/category_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/home_banner_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/main_bottom_nav_controller.dart';
+import 'package:cafty_bay/presentation/state_holder/new_product_controller.dart';
+import 'package:cafty_bay/presentation/state_holder/popular_product_controller.dart';
+import 'package:cafty_bay/presentation/state_holder/special_product_controller.dart';
 import 'package:cafty_bay/presentation/ui/screens/product_list_screen.dart';
 import 'package:cafty_bay/presentation/ui/utility/assets_path.dart';
 import 'package:cafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../data/models/product_list_model.dart';
 import '../widgets/category_item.dart';
 import '../widgets/home/circle_icon_button.dart';
 import '../widgets/home/section_tittle.dart';
@@ -38,11 +43,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: GetBuilder<HomeBannerController>(
                     builder: (homeBannerController) {
                       return Visibility(
-                          visible: homeBannerController.inProgress == false,
-                          replacement: const CenterCircularProgressIndicator(),
-                          child: BannerCarousel(
-                            bannerList:homeBannerController.bannerListModel.bannerList ?? [],
-                          ),
+                        visible: homeBannerController.inProgress == false,
+                        replacement: const CenterCircularProgressIndicator(),
+                        child: BannerCarousel(
+                          bannerList:
+                              homeBannerController.bannerListModel.bannerList ??
+                                  [],
+                        ),
                       );
                     },
                   )),
@@ -57,20 +64,45 @@ class _HomeScreenState extends State<HomeScreen> {
               SectionTittle(
                 tittle: "Popular",
                 onTapSeeAll: () {
-                  Get.to(() => productListScreen());
+                  Get.to(() => ProductListScreen());
                 },
               ),
-              ProductList,
+              GetBuilder<PopularProductController>(
+                  builder: (popularProductController) {
+                return Visibility(
+                  visible: popularProductController.inProgress == false,
+                  replacement: CenterCircularProgressIndicator(),
+                  child: ProductList(
+                      popularProductController.productListModel.productList ??
+                          []),
+                );
+              }),
               SectionTittle(
                 tittle: "Special",
                 onTapSeeAll: () {},
               ),
-              ProductList,
+              GetBuilder<SpecialProductController>(
+                  builder: (specialProductController) {
+                return Visibility(
+                  visible: specialProductController.inProgress == false,
+                  replacement: CenterCircularProgressIndicator(),
+                  child: ProductList(
+                      specialProductController.productListModel.productList ??
+                          []),
+                );
+              }),
               SectionTittle(
                 tittle: "New",
                 onTapSeeAll: () {},
               ),
-              ProductList,
+              GetBuilder<NewProductController>(builder: (newProductController) {
+                return Visibility(
+                  visible: newProductController.inProgress == false,
+                  replacement: CenterCircularProgressIndicator(),
+                  child: ProductList(
+                      newProductController.productListModel.productList ?? []),
+                );
+              }),
             ],
           ),
         ),
@@ -81,40 +113,41 @@ class _HomeScreenState extends State<HomeScreen> {
   SizedBox get CategoryList {
     return SizedBox(
       height: 115,
-      child: GetBuilder<CatergoryController>(
-        builder: (categoryController) {
-          return Visibility(
-            visible: categoryController.inProgress==false,
-            replacement: CenterCircularProgressIndicator(),
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => CategoryItem(
-                  category: categoryController.categoryListModel.categoryList![index],
-              ),
-              itemCount:categoryController.categoryListModel.categoryList?.length??0,
-              primary: false,
-              shrinkWrap: true,
-              separatorBuilder: (_, __) => const SizedBox(
-                width: 8,
-              ),
+      child: GetBuilder<CatergoryController>(builder: (categoryController) {
+        return Visibility(
+          visible: categoryController.inProgress == false,
+          replacement: CenterCircularProgressIndicator(),
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) => CategoryItem(
+              category:
+                  categoryController.categoryListModel.categoryList![index],
             ),
-          );
-        }
-      ),
+            itemCount:
+                categoryController.categoryListModel.categoryList?.length ?? 0,
+            primary: false,
+            shrinkWrap: true,
+            separatorBuilder: (_, __) => const SizedBox(
+              width: 8,
+            ),
+          ),
+        );
+      }),
     );
   }
 
-  SizedBox get ProductList {
+  SizedBox ProductList(List<Product> productList) {
     return SizedBox(
       height: 155,
       child: ListView.separated(
-        itemCount: 10,
+        itemCount: productList.length,
         primary: false,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return const ProductCardItem(
+          return ProductCardItem(
             card_width: 117,
+            product: productList[index],
           );
         },
         separatorBuilder: (_, __) {

@@ -1,15 +1,19 @@
+import 'package:cafty_bay/data/models/product_model.dart';
 import 'package:cafty_bay/presentation/ui/screens/producr_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../data/models/product_list_model.dart';
 import '../utility/app_colors.dart';
 import '../utility/assets_path.dart';
 
 class ProductCardItem extends StatelessWidget {
   const ProductCardItem({
-    super.key, required this.card_width,
+    super.key, required this.card_width, required this.product,
   });
+  final Product product;
+
 final double card_width;
   @override
   Widget build(BuildContext context) {
@@ -36,9 +40,8 @@ final double card_width;
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(16),
                             topRight: Radius.circular(16)),
-                        child: Image.asset(
-                          AssetPath.shoe,
-                          width: 150,
+                        child: Image.network(
+                          product.image??''
                         ))),
                 flex: 7,
               ),
@@ -53,7 +56,7 @@ final double card_width;
                       Padding(
                         padding: const EdgeInsets.only(left: 2.0),
                         child: Text(
-                          "Nike Shoe 12h New",
+                          product.title??'',
                           style: TextStyle(
                               color: Colors.black.withOpacity(.7),
                               fontWeight: FontWeight.w500),
@@ -67,7 +70,7 @@ final double card_width;
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                              "\$120",
+                              "\$${product.price ?? 0}",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: AppColors.primaryColor,
@@ -83,7 +86,7 @@ final double card_width;
                                 color: Colors.amber,
                               ),
                               Text(
-                                "4.6",
+                              '${product.star??0}',
                                 style: TextStyle(
                                     fontSize: 10, color: Colors.black87),
                               )
