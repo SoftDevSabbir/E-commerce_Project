@@ -1,4 +1,3 @@
-import 'package:cafty_bay/data/models/product_model.dart';
 import 'package:cafty_bay/presentation/state_holder/category_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/home_banner_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/main_bottom_nav_controller.dart';
@@ -8,7 +7,6 @@ import 'package:cafty_bay/presentation/state_holder/special_product_controller.d
 import 'package:cafty_bay/presentation/ui/screens/product_list_screen.dart';
 import 'package:cafty_bay/presentation/ui/utility/assets_path.dart';
 import 'package:cafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../data/models/product_list_model.dart';
@@ -31,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: appBar,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -64,14 +62,14 @@ class _HomeScreenState extends State<HomeScreen> {
               SectionTittle(
                 tittle: "Popular",
                 onTapSeeAll: () {
-                  Get.to(() => ProductListScreen());
+                  Get.to(() => const ProductListScreen());
                 },
               ),
               GetBuilder<PopularProductController>(
                   builder: (popularProductController) {
                 return Visibility(
                   visible: popularProductController.inProgress == false,
-                  replacement: CenterCircularProgressIndicator(),
+                  replacement: const CenterCircularProgressIndicator(),
                   child: ProductList(
                       popularProductController.productListModel.productList ??
                           []),
@@ -85,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (specialProductController) {
                 return Visibility(
                   visible: specialProductController.inProgress == false,
-                  replacement: CenterCircularProgressIndicator(),
+                  replacement: const CenterCircularProgressIndicator(),
                   child: ProductList(
                       specialProductController.productListModel.productList ??
                           []),
@@ -98,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
               GetBuilder<NewProductController>(builder: (newProductController) {
                 return Visibility(
                   visible: newProductController.inProgress == false,
-                  replacement: CenterCircularProgressIndicator(),
+                  replacement: const CenterCircularProgressIndicator(),
                   child: ProductList(
                       newProductController.productListModel.productList ?? []),
                 );
@@ -116,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: GetBuilder<CatergoryController>(builder: (categoryController) {
         return Visibility(
           visible: categoryController.inProgress == false,
-          replacement: CenterCircularProgressIndicator(),
+          replacement: const CenterCircularProgressIndicator(),
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) => CategoryItem(
@@ -174,8 +172,8 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide.none),
           filled: true,
-          fillColor: Color(0xffe6e6e7),
-          prefixIcon: Icon(
+          fillColor: const Color(0xffe6e6e7),
+          prefixIcon: const Icon(
             Icons.search,
             color: Colors.grey,
           )),

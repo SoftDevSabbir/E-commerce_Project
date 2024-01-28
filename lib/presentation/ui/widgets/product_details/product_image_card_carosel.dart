@@ -6,10 +6,11 @@ import '../../utility/app_colors.dart';
 class ProductImageCarosel extends StatefulWidget {
   const ProductImageCarosel({
     super.key,
-    this.height,
+    this.height, required this.urls,
   });
 
   final double? height;
+  final List<String>urls;
 
   @override
   State<ProductImageCarosel> createState() => _ProductImageCaroselState();
@@ -32,20 +33,20 @@ class _ProductImageCaroselState extends State<ProductImageCarosel> {
             // enableInfiniteScroll: false,
             // autoPlay: true,
           ),
-          items: [1, 2, 3, 4, 5].map((i) {
+          items: widget.urls.map((url) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
                     width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 1.0),
+                    margin:  EdgeInsets.symmetric(horizontal: 1.0),
                     decoration: BoxDecoration(
                         color: Colors.grey,
+                      image: DecorationImage(image: NetworkImage(url))
                        ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'text $i',
-                      style: const TextStyle(fontSize: 16.0),
-                    ));
+                    alignment: Alignment.center
+
+                );
+
               },
             );
           }).toList(),
@@ -63,7 +64,7 @@ class _ProductImageCaroselState extends State<ProductImageCarosel> {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < widget.urls.length; i++)
                       Container(
                         height: 12,
                         width: 12,

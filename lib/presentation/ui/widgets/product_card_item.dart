@@ -20,7 +20,7 @@ final double card_width;
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: (){
-        Get.to(ProductDetailsScreen());
+        Get.to(ProductDetailsScreen(productId: product.id!));
       },
       child: SizedBox(
         height: 155,
