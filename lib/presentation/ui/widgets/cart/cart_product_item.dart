@@ -1,33 +1,44 @@
+import 'package:cafty_bay/data/models/cart_item.dart';
+import 'package:cafty_bay/presentation/state_holder/cart_list_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:item_count_number_button/item_count_number_button.dart';
 
 import '../../utility/app_colors.dart';
-import '../../utility/assets_path.dart';
 
-class CardProductItem extends StatelessWidget {
-  CardProductItem({super.key});
-  ValueNotifier<int> noOfItems = ValueNotifier(1);
+class CardProductItem extends StatefulWidget {
+  CardProductItem({super.key, required this.cartItem});
+
+
+  final CartItem cartItem;
+
+  @override
+  State<CardProductItem> createState() => _CardProductItemState();
+}
+
+class _CardProductItemState extends State<CardProductItem> {
+  late ValueNotifier<int> noOfItems = ValueNotifier(widget.cartItem.quantity);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Row(
         children: [
-          Image.asset(AssetPath.shoe, width: 100),
+          Image.network(widget.cartItem.product!.image??'', width: 100),
           SizedBox(width: 8),
           Expanded(
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Expanded(
+                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Nike shoe 12h New wedqwedqwd dwedwede",
-                              style: TextStyle(
+                             widget.cartItem.product?.title??'' ,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black54,
@@ -37,9 +48,9 @@ class CardProductItem extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                Text("color: red"),
+                                Text("color: ${  widget.cartItem.color??''}"),
                                 SizedBox(width: 2),
-                                Text("size: XL")
+                                Text("size:${  widget.cartItem.size??''}")
                               ],
                             )
                           ],
@@ -47,7 +58,7 @@ class CardProductItem extends StatelessWidget {
                       ),
                       IconButton(
                           onPressed: () {},
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.delete_forever_outlined,
                             color: Colors.grey,
                           ))
@@ -57,8 +68,8 @@ class CardProductItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\$100",
-                        style: TextStyle(
+                        "\৳${widget.cartItem.product?.price??0}",
+                        style: const TextStyle(
                             color: AppColors.primaryColor,
                             fontSize: 16,
                             fontWeight: FontWeight.w600),
@@ -77,6 +88,7 @@ class CardProductItem extends StatelessWidget {
                             onChanged: (v) {
                               print(v);
                               noOfItems.value = v.toInt();
+                              Get.find<CartListController>().updateQuantity(widget.cartItem.id!, noOfItems.value);
                             },
                           );
                         },

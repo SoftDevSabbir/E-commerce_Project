@@ -1,6 +1,6 @@
-import 'package:cafty_bay/data/models/product_model.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
+import '../../data/models/product_list_model.dart';
 import '../../data/services/network_caller.dart';
 import '../../data/utility/urls.dart';
 

@@ -45,50 +45,29 @@ class _BannerCarouselState extends State<BannerCarousel> {
                     borderRadius: BorderRadius.circular(8),
                     color: AppColors.primaryColor,
                   ),
-                  child: Row(
+                  child: Stack(
                     children: [
                       Expanded(
-                          child: Padding(
-                        padding: const EdgeInsets.only(left: 15, bottom: 7, top: 4),
-                        child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                image: DecorationImage(
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  image: DecorationImage(
                                     fit: BoxFit.fill,
                                     alignment: Alignment.center,
-                                    image: NetworkImage(banner.image ?? ""))),
-                            alignment: Alignment.center),
-                      )),
-                      const SizedBox(width: 12),
-                      Expanded(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            banner.title ?? "",
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 20),
-                          ),
-                          const SizedBox(height: 7),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8)),
-                            height: 40,
-                            width: 120,
-                            child: const Center(
-                                child: Text(
-                              "Buy Now",
-                              style: TextStyle(
-                                  color: AppColors.primaryColor,
-                                  fontWeight: FontWeight.w500),
-                            )),
-                          )
-                        ],
-                      ))
+                                    image: NetworkImage(banner.image ?? ""),)),
+                              alignment: Alignment.center)),
+                   Row(
+                     children: [
+                       Padding(
+                         padding: const EdgeInsets.only(left: 15.0,top: 32),
+                         child: Expanded(
+                             flex:1,
+                             child: Container(
+                                 width:170,
+                                 child: carosel_product_text(banner))),
+                       ),
+                     ],
+                   )
                     ],
                   ),
                 );
@@ -126,5 +105,36 @@ class _BannerCarouselState extends State<BannerCarousel> {
             })
       ],
     );
+  }
+
+  Column carosel_product_text(BannerItem banner) {
+    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          banner.title ?? "",
+                          style: const TextStyle(
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20),
+                        ),
+                        const SizedBox(height: 7),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
+                          height: 40,
+                          width: 120,
+                          child: const Center(
+                              child: Text(
+                            "Buy Now",
+                            style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.w500),
+                          )),
+                        )
+                      ],
+                    );
   }
 }

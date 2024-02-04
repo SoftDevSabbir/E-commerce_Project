@@ -1,18 +1,15 @@
 import 'package:cafty_bay/data/models/product_model.dart';
 import 'package:cafty_bay/presentation/ui/screens/producr_detail_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../data/models/product_list_model.dart';
 import '../utility/app_colors.dart';
-import '../utility/assets_path.dart';
 
 class ProductCardItem extends StatelessWidget {
   const ProductCardItem({
     super.key, required this.card_width, required this.product,
   });
-  final Product product;
+  final ProductModel product;
 
 final double card_width;
   @override
@@ -29,23 +26,24 @@ final double card_width;
           child: Column(
             children: [
               Expanded(
+                flex: 7,
                 child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(8),
                           topLeft: Radius.circular(8)),
                       color: Colors.cyan.shade50,
                     ),
                     child: ClipRRect(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(16),
                             topRight: Radius.circular(16)),
                         child: Image.network(
                           product.image??''
                         ))),
-                flex: 7,
               ),
               Expanded(
+                flex: 3,
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
@@ -70,8 +68,8 @@ final double card_width;
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                              "\$${product.price ?? 0}",
-                              style: TextStyle(
+                              "\৳${product.price ?? 0}",
+                              style: const TextStyle(
                                   fontSize: 12,
                                   color: AppColors.primaryColor,
                                   fontWeight: FontWeight.w500),
@@ -80,7 +78,7 @@ final double card_width;
                           Wrap(
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.star,
                                 size: 14,
                                 color: Colors.amber,
@@ -96,8 +94,8 @@ final double card_width;
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(3)),
                             color: AppColors.primaryColor,
-                            child: Padding(
-                              padding: const EdgeInsets.all(2.0),
+                            child: const Padding(
+                              padding: EdgeInsets.all(2.0),
                               child: Icon(
                                 Icons.favorite_outline_rounded,
                                 size: 12,
@@ -110,7 +108,6 @@ final double card_width;
                     ],
                   ),
                 ),
-                flex: 3,
               ),
             ],
           ),

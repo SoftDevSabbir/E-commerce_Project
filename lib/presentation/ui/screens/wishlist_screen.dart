@@ -1,11 +1,9 @@
-import 'package:cafty_bay/presentation/ui/widgets/product_card_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../state_holder/main_bottom_nav_controller.dart';
-import '../widgets/category_item.dart';
 
 class WishListScreen extends StatefulWidget {
   const WishListScreen({super.key});

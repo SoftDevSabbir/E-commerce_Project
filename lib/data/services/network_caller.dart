@@ -2,10 +2,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:cafty_bay/data/models/response_data.dart';
 import 'package:http/http.dart';
 
 import '../../presentation/state_holder/auth_controller.dart';
+import '../models/response_data.dart';
 
 class NetworkCaller {
   Future<ResponseData> getRequest(String url, {String? token}) async {
@@ -14,7 +14,7 @@ class NetworkCaller {
     final Response response = await get(
       Uri.parse(url),
       headers: {
-        'token': token.toString(),
+        'token': (token ?? AuthController.token).toString(),
         'Content-type' : 'application/json'
       },
     );
@@ -37,6 +37,14 @@ class NetworkCaller {
           errorMessage: decodedResponse['data'] ?? 'Something went wrong',
         );
       }
+    } else if (response.statusCode == 401) {
+      await AuthController.clearAuthData();
+      AuthController.goToLogin();
+      return ResponseData(
+        isSuccess: false,
+        statusCode: response.statusCode,
+        responseData: '',
+      );
     } else {
       return ResponseData(
         isSuccess: false,
@@ -59,6 +67,8 @@ class NetworkCaller {
     );
     log(response.statusCode.toString());
     log(response.body.toString());
+    log("header");
+    log(response.headers.toString());
     if (response.statusCode == 200) {
       final decodedResponse = jsonDecode(response.body);
       if (decodedResponse['msg'] == 'success') {
@@ -75,6 +85,14 @@ class NetworkCaller {
           errorMessage: decodedResponse['data'] ?? 'Something went wrong',
         );
       }
+    } else if (response.statusCode == 401) {
+      await AuthController.clearAuthData();
+      AuthController.goToLogin();
+      return ResponseData(
+        isSuccess: false,
+        statusCode: response.statusCode,
+        responseData: '',
+      );
     } else {
       return ResponseData(
         isSuccess: false,

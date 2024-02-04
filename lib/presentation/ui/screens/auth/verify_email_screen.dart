@@ -4,6 +4,7 @@ import 'package:cafty_bay/presentation/ui/widgets/app_logo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:regexed_validator/regexed_validator.dart';
 
 class VerifyEmailScreen extends StatelessWidget {
   VerifyEmailScreen({super.key});
@@ -46,9 +47,10 @@ class VerifyEmailScreen extends StatelessWidget {
                     controller: _emailTEController,
                     decoration: InputDecoration(hintText: "Email"),
                     validator: (value) {
-                      if (value?.trim().isEmpty ?? true) {
-                        return "Enter Your Email";
-                      } else if (value?.trim().isEmpty ?? true) {}
+                      if (value == null || !validator.email(value)) {
+                        return "Please enter a valid email";
+                      }
+                      return null;
                     },
                   ),
                   const SizedBox(

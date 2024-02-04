@@ -1,15 +1,17 @@
+import 'package:cafty_bay/presentation/state_holder/auth_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/category_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/home_banner_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/main_bottom_nav_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/new_product_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/popular_product_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/special_product_controller.dart';
+import 'package:cafty_bay/presentation/ui/screens/auth/verify_email_screen.dart';
 import 'package:cafty_bay/presentation/ui/screens/product_list_screen.dart';
 import 'package:cafty_bay/presentation/ui/utility/assets_path.dart';
 import 'package:cafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../data/models/product_list_model.dart';
+import '../../../data/models/product_model.dart';
 import '../widgets/category_item.dart';
 import '../widgets/home/circle_icon_button.dart';
 import '../widgets/home/section_tittle.dart';
@@ -134,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  SizedBox ProductList(List<Product> productList) {
+  SizedBox ProductList(List<ProductModel> productList) {
     return SizedBox(
       height: 155,
       child: ListView.separated(
@@ -185,8 +187,12 @@ class _HomeScreenState extends State<HomeScreen> {
       title: Image.asset(AssetPath.logoNav),
       actions: [
         CircleIconButton(
-          ontap: () {},
+          ontap: ()async {
+            await AuthController.clearAuthData();
+            Get.to(()=>VerifyEmailScreen());
+          },
           iconData: Icons.person,
+
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),

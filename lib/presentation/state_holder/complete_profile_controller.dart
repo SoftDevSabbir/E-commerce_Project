@@ -19,7 +19,7 @@ class CompleteProfileController extends GetxController {
 
   Profile get profile => _profile;
 
-  // TODO: How to fix this code smell
+
   Future<bool> createProfileData(String token,CreateProfileParams params) async {
     _inProgress = true;
     update();

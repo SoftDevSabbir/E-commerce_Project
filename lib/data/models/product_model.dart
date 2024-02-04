@@ -1,26 +1,86 @@
-import 'package:cafty_bay/data/models/product_list_model.dart';
 
-class ProductListModel {
-  String? msg;
-  List<Product>? productList;
+import 'package:cafty_bay/data/models/categore_list_model.dart';
 
-  ProductListModel({this.msg, this.productList});
+import 'brand_model.dart';
 
-  ProductListModel.fromJson(Map<String, dynamic> json) {
-    msg = json['msg'];
-    if (json['data'] != null) {
-      productList = <Product>[];
-      json['data'].forEach((v) {
-        productList!.add(new Product.fromJson(v));
-      });
-    }
+class ProductModel {
+  int? id;
+  String? title;
+  String? shortDes;
+  String? price;
+  int? discount;
+  String? discountPrice;
+  String? image;
+  int? stock;
+  int? star;
+  String? remark;
+  int? categoryId;
+  int? brandId;
+  String? createdAt;
+  String? updatedAt;
+  BrandModel? brand;
+  CategoryListModel? category;
+
+  ProductModel(
+      {this.id,
+        this.title,
+        this.shortDes,
+        this.price,
+        this.discount,
+        this.discountPrice,
+        this.image,
+        this.stock,
+        this.star,
+        this.remark,
+        this.categoryId,
+        this.brandId,
+        this.createdAt,
+        this.updatedAt,
+        this.brand,
+        this.category});
+
+  ProductModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    shortDes = json['short_des'];
+    price = json['price'];
+    discount = json['discount'];
+    discountPrice = json['discount_price'];
+    image = json['image'];
+    stock = json['stock'];
+    star = json['star'];
+    remark = json['remark'];
+    categoryId = json['category_id'];
+    brandId = json['brand_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    brand = json['brand'] != null ? BrandModel.fromJson(json['brand']) : null;
+    category = json['category'] != null
+        ? CategoryListModel.fromJson(json['category'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['msg'] = this.msg;
-    if (this.productList != null) {
-      data['data'] = this.productList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['short_des'] = shortDes;
+    data['price'] = price;
+    data['discount'] = discount;
+    data['discount_price'] = discountPrice;
+    data['image'] = image;
+    data['stock'] = stock;
+    data['star'] = star;
+    data['remark'] = remark;
+    data['category_id'] = categoryId;
+    data['brand_id'] = brandId;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (brand != null) {
+      data['brand'] = brand!.toJson();
+    }
+    if (category != null) {
+      data['category'] = category!.toJson();
     }
     return data;
   }

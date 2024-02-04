@@ -1,19 +1,30 @@
+
 import 'package:get/get.dart';
 
-class MainBottomNavController extends GetxController{
-  int _selectedIndex=0;
+import 'auth_controller.dart';
 
-  int get currentIndex{
-    return _selectedIndex;
-  }
-  void changeIndex(int index){
-    if(_selectedIndex==index){
+class MainBottomNavController extends GetxController {
+  int _selectedIndex = 0;
+
+  int get currentIndex => _selectedIndex;
+
+  void changeIndex(int index) {
+    if (_selectedIndex == index) {
       return;
     }
-    _selectedIndex=index;
+
+    if (index == 2 || index == 3) {
+      if (Get.find<AuthController>().isTokenNotNull == false) {
+        AuthController.goToLogin();
+        return;
+      }
+    }
+
+    _selectedIndex = index;
     update();
   }
-  void backToHome(){
+
+  void backToHome() {
     changeIndex(0);
   }
 }
