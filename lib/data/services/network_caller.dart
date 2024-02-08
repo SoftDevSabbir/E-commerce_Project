@@ -14,10 +14,12 @@ class NetworkCaller {
     final Response response = await get(
       Uri.parse(url),
       headers: {
-        'token': (token ?? AuthController.token).toString(),
+         'token': (token ?? AuthController.token).toString(),
+       // 'token': AuthController.token.toString(),
         'Content-type' : 'application/json'
       },
     );
+    log("header");
     log(response.headers.toString());
     log(response.statusCode.toString());
     log(response.body.toString());
@@ -38,8 +40,8 @@ class NetworkCaller {
         );
       }
     } else if (response.statusCode == 401) {
-      await AuthController.clearAuthData();
-      AuthController.goToLogin();
+     // await AuthController.clearAuthData();
+   //   AuthController.goToLogin();
       return ResponseData(
         isSuccess: false,
         statusCode: response.statusCode,

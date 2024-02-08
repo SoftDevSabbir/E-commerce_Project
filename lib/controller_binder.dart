@@ -1,3 +1,4 @@
+import 'package:cafty_bay/presentation/state_holder/add_product_review_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/add_to_cart_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/auth_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/cart_list_controller.dart';
@@ -10,10 +11,13 @@ import 'package:cafty_bay/presentation/state_holder/new_product_controller.dart'
 import 'package:cafty_bay/presentation/state_holder/popular_product_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/product_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/product_details_controller.dart';
+import 'package:cafty_bay/presentation/state_holder/product_review_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/read_profile_data_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/send_email_otp_controller.dart';
+import 'package:cafty_bay/presentation/state_holder/show_wish_list_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/special_product_controller.dart';
 import 'package:cafty_bay/presentation/state_holder/verify_otp_controller.dart';
+import 'package:cafty_bay/presentation/state_holder/create_wish_list_controller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -36,6 +40,10 @@ class ControllerBinder extends Bindings{
     Get.put(AddToCartController());
     Get.put(CartListController());
     Get.put(CreateInvoiceController());
+    Get.put(CreateWishListController());
+    Get.put(ShowWishListController());
+    Get.put(ProdutReviewListController());
+    Get.put(AddProdutReviewController());
 }
 
 }

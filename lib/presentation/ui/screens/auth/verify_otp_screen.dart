@@ -58,7 +58,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 ),
                 PinCodeTextField(
                   controller: _otpTEController,
-                  length:6,
+                  length: 6,
                   obscureText: false,
                   animationType: AnimationType.fade,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -98,14 +98,14 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                                     widget.email, _otpTEController.text);
                                 if (response) {
                                   if (verifyOtpController.shouldNavigateCompleteProfile) {
-                                    Get.to(() => CompleteProfileScreen());
+                                    Get.to(() => const CompleteProfileScreen());
                                   } else {
                                     Get.offAll(() => const MainBottomNavScreen());
                                   }
                                 } else {
                                   Get.showSnackbar(GetSnackBar(
                                     title: 'OTP verification failed',
-                                    message: "something Wrong",
+                                    message: verifyOtpController.errorMessage,
                                     duration: const Duration(seconds: 2),
                                     isDismissible: true,
                                   ));
@@ -154,4 +154,3 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
     );
   }
 }
-

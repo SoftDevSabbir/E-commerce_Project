@@ -11,7 +11,7 @@ import 'package:cafty_bay/presentation/ui/utility/assets_path.dart';
 import 'package:cafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../data/models/product_model.dart';
+import '../../../data/models/product_data.dart';
 import '../widgets/category_item.dart';
 import '../widgets/home/circle_icon_button.dart';
 import '../widgets/home/section_tittle.dart';
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  SizedBox ProductList(List<ProductModel> productList) {
+  SizedBox ProductList(List<ProductData> productList) {
     return SizedBox(
       height: 155,
       child: ListView.separated(

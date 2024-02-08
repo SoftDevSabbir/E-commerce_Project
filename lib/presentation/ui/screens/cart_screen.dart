@@ -33,33 +33,41 @@ class _CartScreenState extends State<CartScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Carts"),
-          leading:
-              IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () {}),
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Get.find<MainBottomNavController>().backToHome();
+              }),
         ),
-        body: GetBuilder<CartListController>(builder: (cartListController) {
-          if (cartListController.inProgress) {
-            return const CenterCircularProgressIndicator();
-          }
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.separated(
-                  itemCount:
-                      cartListController.cartListModel.cartItemList?.length ??
-                          0,
-                  itemBuilder: (context, index) => CardProductItem(
-                    cartItem:
-                        cartListController.cartListModel.cartItemList![index],
-                  ),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 8,
+        body: RefreshIndicator(
+          onRefresh: () async {
+            Get.find<CartListController>().getCartList();
+          },
+          child: GetBuilder<CartListController>(builder: (cartListController) {
+            if (cartListController.inProgress) {
+              return const CenterCircularProgressIndicator();
+            }
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    itemCount:
+                        cartListController.cartListModel.cartItemList?.length ??
+                            0,
+                    itemBuilder: (context, index) => CardProductItem(
+                      cartItem:
+                          cartListController.cartListModel.cartItemList![index],
+                    ),
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 8,
+                    ),
                   ),
                 ),
-              ),
-              totalPriceAndCheakOutSection(cartListController.totalPrice),
-            ],
-          );
-        }),
+                totalPriceAndCheakOutSection(cartListController.totalPrice),
+              ],
+            );
+          }),
+        ),
       ),
     );
   }
@@ -75,7 +83,7 @@ class _CartScreenState extends State<CartScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 18.0),
+            padding: const EdgeInsets.only(left: 18.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

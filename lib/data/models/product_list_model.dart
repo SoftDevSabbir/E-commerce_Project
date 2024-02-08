@@ -1,18 +1,18 @@
 
-import 'package:cafty_bay/data/models/product_model.dart';
+import 'package:cafty_bay/data/models/product_data.dart';
 
 class ProductListModel {
   String? msg;
-  List<ProductModel>? productList;
+  List<ProductData>? productList;
 
   ProductListModel({this.msg, this.productList});
 
   ProductListModel.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
     if (json['data'] != null) {
-      productList = <ProductModel>[];
+      productList = <ProductData>[];
       json['data'].forEach((v) {
-        productList!.add(ProductModel.fromJson(v));
+        productList!.add(ProductData.fromJson(v));
       });
     }
   }

@@ -1,5 +1,5 @@
 
-import 'package:cafty_bay/data/models/product_model.dart';
+import 'package:cafty_bay/data/models/product_data.dart';
 
 class CartItem {
   int? id;
@@ -9,7 +9,7 @@ class CartItem {
   String? size;
   String? createdAt;
   String? updatedAt;
-  ProductModel? product;
+  ProductData? product;
   int quantity = 1;
 
   CartItem(
@@ -32,7 +32,7 @@ class CartItem {
     quantity=int.tryParse(json['qty'])??1;
     updatedAt = json['updated_at'];
     product =
-    json['product'] != null ? ProductModel.fromJson(json['product']) : null;
+    json['product'] != null ? ProductData.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {

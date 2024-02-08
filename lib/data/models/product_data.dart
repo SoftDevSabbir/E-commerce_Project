@@ -3,7 +3,7 @@ import 'package:cafty_bay/data/models/categore_list_model.dart';
 
 import 'brand_model.dart';
 
-class ProductModel {
+class ProductData {
   int? id;
   String? title;
   String? shortDes;
@@ -21,7 +21,7 @@ class ProductModel {
   BrandModel? brand;
   CategoryListModel? category;
 
-  ProductModel(
+  ProductData(
       {this.id,
         this.title,
         this.shortDes,
@@ -39,7 +39,7 @@ class ProductModel {
         this.brand,
         this.category});
 
-  ProductModel.fromJson(Map<String, dynamic> json) {
+  ProductData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     shortDes = json['short_des'];

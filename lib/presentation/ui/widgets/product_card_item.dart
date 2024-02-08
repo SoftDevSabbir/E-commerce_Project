@@ -1,5 +1,5 @@
-import 'package:cafty_bay/data/models/product_model.dart';
-import 'package:cafty_bay/presentation/ui/screens/producr_detail_screen.dart';
+import 'package:cafty_bay/data/models/product_data.dart';
+import 'package:cafty_bay/presentation/ui/screens/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +9,7 @@ class ProductCardItem extends StatelessWidget {
   const ProductCardItem({
     super.key, required this.card_width, required this.product,
   });
-  final ProductModel product;
+  final ProductData product;
 
 final double card_width;
   @override
@@ -17,7 +17,9 @@ final double card_width;
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: (){
-        Get.to(ProductDetailsScreen(productId: product.id!));
+        Get.to(ProductDetailsScreen(
+            productId: product.id!
+        ));
       },
       child: SizedBox(
         height: 155,

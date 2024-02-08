@@ -1,4 +1,5 @@
 
+import 'package:cafty_bay/presentation/ui/screens/auth/verify_email_screen.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/cart_item.dart';
@@ -34,10 +35,31 @@ class CartListController extends GetxController {
       _cartListModel = CartListModel.fromJson(response.responseData);
       _totalPrice.value = _calculateTotalPrice;
       isSuccess = true;
-    } else {
+    } else if(response.statusCode==401){
+      Get.to(()=>VerifyEmailScreen());
+      isSuccess= false;
+    }else {
       _errorMessage = response.errorMessage;
     }
     _inProgress = false;
+    update();
+    return isSuccess;
+  }
+
+  Future<bool> removeFromCartList(int id)async{
+    bool isSuccess=false;
+    _inProgress=true;
+    update();
+    final response= await NetworkCaller().getRequest(Urls.removeFromCartList(id));
+    _inProgress=false;
+    if(response.isSuccess){
+      _cartListModel.cartItemList?.removeWhere((element) => element.productId==id);
+      _calculateTotalPrice;
+      update();
+      isSuccess= true;
+    }else{
+      _errorMessage=response.errorMessage;
+    }
     update();
     return isSuccess;
   }

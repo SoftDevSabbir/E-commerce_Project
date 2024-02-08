@@ -1,5 +1,5 @@
 
-
+import 'package:cafty_bay/presentation/ui/screens/product_review_screen.dart';
 import 'package:cafty_bay/presentation/ui/widgets/product_details/product_image_card_carosel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -190,12 +190,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         const SizedBox(
           width: 8,
         ),
-        const Text(
-          'Reviews',
-          style: TextStyle(
-              fontSize: 16,
-              color: AppColors.primaryColor,
-              fontWeight: FontWeight.w500),
+        InkWell(
+          onTap: (){
+            Get.to(()=>ReviewInProductListScreen(productId: widget.productId));
+          },
+          child: const Text(
+            'Reviews',
+            style: TextStyle(
+                fontSize: 16,
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.w500),
+          ),
         ),
         const SizedBox(
           width: 8,
