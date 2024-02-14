@@ -1,109 +1,129 @@
+
+import 'package:cafty_bay/presentation/state_holder/product_review_controller.dart';
 import 'package:cafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../state_holder/add_product_review_controller.dart';
-import '../utility/app_colors.dart';
 
-class AddProductReviewScreen extends StatefulWidget {
-  const AddProductReviewScreen({super.key, required this.productId});
+class CreateReviewScreen extends StatefulWidget {
+  const CreateReviewScreen({super.key, required this.productId});
+
   final int productId;
+
   @override
-  State<AddProductReviewScreen> createState() => _AddProductReviewScreenState();
+  State<CreateReviewScreen> createState() => _CreateReviewScreenState();
 }
 
-class _AddProductReviewScreenState extends State<AddProductReviewScreen> {
-  final TextEditingController ratingTEController = TextEditingController();
-  final TextEditingController describtionTEController = TextEditingController();
+class _CreateReviewScreenState extends State<CreateReviewScreen> {
+  final TextEditingController _productIdTEController = TextEditingController();
+  final TextEditingController _ratingTEController = TextEditingController();
+  final TextEditingController _writeReviewTEController =
+  TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
+  @override
+  void initState() {
+    super.initState();
+    _productIdTEController.text = widget.productId.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //actions: [Icon(Icons.arrow_back_ios)],
-        title: const Text("Create Review"),
+        title: const Text('Create Review'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 36, right: 36, top: 60),
           child: Form(
             key: _formkey,
             child: Column(
               children: [
-                const SizedBox(height: 150),
                 TextFormField(
-                  controller: ratingTEController,
-                  decoration: const InputDecoration(hintText: 'Rating'),
+                  controller: _productIdTEController,
+                  readOnly: true,
                   textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  validator: (String? text) {
-                    if (text!.isEmpty == true) {
-                      return 'Give a star';
+                  decoration: const InputDecoration(labelText: "product I'D"),
+                  validator: (value) {
+                    if (value!.trim().isEmpty ?? true) {
+                      return 'Enter product id';
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 16),
                 TextFormField(
-                  controller: describtionTEController,
-                  decoration: const InputDecoration(hintText: 'Description'),
+                  controller: _ratingTEController,
+                  keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
-                  maxLines: 4,
-                  keyboardType: TextInputType.text,
-                  validator: (String? text) {
-                    if (text!.isEmpty == true) {
+                  decoration: const InputDecoration(
+                      labelText: 'Rating', hintText: ' 8/10'),
+                  validator: (value) {
+                    if (value!.trim().isEmpty ?? true) {
+                      return 'Enter valid rating';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _writeReviewTEController,
+                  textInputAction: TextInputAction.done,
+                  maxLines: 5,
+                  decoration: const InputDecoration(
+                    hintText: 'Write Review',
+                  ),
+                  validator: (value) {
+                    if (value!.trim().isEmpty ?? true) {
                       return 'Write Describtion';
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 10),
-                GetBuilder<AddProdutReviewController>(
-                    builder: (addProdutReviewController) {
-                      if(addProdutReviewController.showReviewListInProgress){
-                        return const CenterCircularProgressIndicator();
-                      }
-                  return SizedBox(
-                      width: double.infinity,
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: GetBuilder<AddReviewController>(builder: (controller) {
+                    return Visibility(
+                      visible: controller.inProgress == false,
+                      replacement: const CenterCircularProgressIndicator(),
                       child: ElevatedButton(
-                          onPressed: () async {
-                            if (_formkey.currentState!.validate()) {
-                              final response =
-                                 await addProdutReviewController.CreateReview(
-                                      describtionTEController.text.trim(),
-                                      widget.productId,
-                                      int.parse(ratingTEController.text));
-
-                              if (response) {
-                                Get.showSnackbar(
-                                  const GetSnackBar(
-                                    title: 'Thank you',
-                                    message:
-                                    'Your cart added',
-                                    backgroundColor: AppColors
-                                        .primaryColor,
-                                    duration:
-                                    Duration(seconds: 2),
-                                  ),
-                                );
-                              } else {
-                                Get.showSnackbar(
-                                  const GetSnackBar(
-                                    title: 'cart failed!',
-                                    message: 'Something went wrong',
-                                    backgroundColor:
-                                    Colors.redAccent,
-                                    duration:
-                                    Duration(seconds: 2),
-                                  ),
-                                );
-                              }
+                        onPressed: () async {
+                          if (_formkey.currentState!.validate()) {
+                            final response = await controller.addReview(
+                              widget.productId,
+                              int.parse(_ratingTEController.text.trim()),
+                              _writeReviewTEController.text.trim(),
+                            );
+                            if (response) {
+                              Get.showSnackbar(GetSnackBar(
+                                title: 'Success',
+                                message: controller.errorMessage,
+                                duration: const Duration(seconds: 2),
+                                isDismissible: true,
+                                backgroundColor: Colors.green,
+                              ));
+                              Navigator.pop(context);
+                              Get.find<ProdutReviewListController>()
+                                  .showReviewList(widget.productId);
+                            } else {
+                              Get.showSnackbar(GetSnackBar(
+                                title: 'Failed',
+                                message: controller.errorMessage,
+                                duration: const Duration(seconds: 2),
+                                isDismissible: true,
+                                backgroundColor: Colors.red,
+                              ));
                             }
-                          },
-                          child: const Text("Submit")));
-                })
+                          }
+                        },
+                        child: const Text('Submit'),
+                      ),
+                    );
+                  }),
+                )
               ],
             ),
           ),
@@ -111,10 +131,12 @@ class _AddProductReviewScreenState extends State<AddProductReviewScreen> {
       ),
     );
   }
+
   @override
   void dispose() {
+    _productIdTEController.clear();
+    _ratingTEController.clear();
+    _writeReviewTEController.clear();
     super.dispose();
-    ratingTEController.dispose();
-    describtionTEController.dispose();
   }
 }

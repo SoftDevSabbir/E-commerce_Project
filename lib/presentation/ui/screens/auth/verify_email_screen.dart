@@ -71,17 +71,17 @@ class VerifyEmailScreen extends StatelessWidget {
                                       await controller.sendOtpToEmail(
                                           _emailTEController.text.trim());
                                   if(result){
-                                    Get.to(()=>VerifyOTPScreen(email:_emailTEController.text.trim()));
+                                    Get.to(()=>VerifyOtpScreen(email:_emailTEController.text.trim()));
                                   }else{
                                     Get.showSnackbar(GetSnackBar(title: "Send Otp faild",
                                      message: controller.errorMessage,
-                                      duration: Duration(seconds: 2),
+                                      duration: const Duration(seconds: 2),
                                       isDismissible: true,
                                     ));
                                   }
                                 }
                               },
-                              child: Text("Next")),
+                              child: const Text("Next")),
                         ));
                   })
                 ],

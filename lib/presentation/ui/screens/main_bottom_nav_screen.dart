@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
+import '../../state_holder/brand_controller.dart';
 import '../../state_holder/home_banner_controller.dart';
 
 class MainBottomNavScreen extends StatefulWidget {
@@ -35,6 +36,7 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Get.find<HomeBannerController>().getBannerList();
       Get.find<CatergoryController>().getCategoryList();
+      Get.find<BrandListController>().getBrandList();
       Get.find<PopularProductController>().getPopularProductList();
       Get.find<SpecialProductController>().getSpecialProductList();
       Get.find<NewProductController>().getNewProductList();

@@ -1,50 +1,54 @@
-import 'package:flutter/cupertino.dart';
+
+import 'package:cafty_bay/data/models/category_list_Item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../data/models/category_list_Item.dart';
+import '../../../data/models/brand_data.dart';
 import '../screens/product_list_screen.dart';
 import '../utility/app_colors.dart';
 
-class CategoryItem extends StatelessWidget {
-  const CategoryItem({
+class CategoryBrandItem extends StatelessWidget {
+  const CategoryBrandItem({
     super.key,
-    required this.category,
+    this.categoryData,
+    this.brandData,
   });
-  final Category category;
 
+  final Category? categoryData;
+  final BrandData? brandData;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            Get.to(() =>  ProductListScreen(
-                  category: category.categoryName??'',
-              categoryId: category.id,
-                ));
-          },
-          child: Card(
-            color: Colors.cyan.shade50,
+    return GestureDetector(
+      onTap: () {
+        Get.to(ProductListScreen(
+          title: categoryData?.categoryName ?? brandData?.brandName ?? '',
+          id: categoryData?.id ?? brandData?.id,
+        ));
+      },
+      child: Column(
+        children: [
+          Card(
+            elevation: 0,
+            color: AppColors.primaryColor.withOpacity(0.1),
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Image.network(
-                category.categoryImg ?? '',
-                height: 40,
-                width: 40,
-              ),
-            ),
+                padding: const EdgeInsets.all(8),
+                child: Image.network(
+                  categoryData?.categoryImg ?? brandData?.brandImg ?? '',
+                  width: 50,
+                  height: 50,
+                )),
           ),
-        ),
-        Text(
-          category.categoryName ?? '',
-          style: TextStyle(
+          Text(
+            categoryData?.categoryName ?? brandData?.brandName ?? '',
+            style: const TextStyle(
               fontSize: 16,
+              color: AppColors.primaryColor,
               fontWeight: FontWeight.w500,
-              color: AppColors.primaryColor),
-        )
-      ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

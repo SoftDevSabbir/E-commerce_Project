@@ -25,6 +25,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
       children: [
         CarouselSlider(
           options: CarouselOptions(
+            autoPlay: true,
             height: widget.height ?? 220.0,
             onPageChanged: (index, reason) {
               _currentIndex.value = index;
@@ -38,7 +39,9 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.grey,
-                    image: DecorationImage(image: NetworkImage(url)),
+                    image: DecorationImage(
+                         fit: BoxFit.fill,
+                        image: NetworkImage(url)),
                   ),
                 );
               },

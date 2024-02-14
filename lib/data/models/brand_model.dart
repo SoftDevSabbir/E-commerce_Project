@@ -1,28 +1,29 @@
-class BrandModel {
-  int? id;
-  String? brandName;
-  String? brandImg;
-  String? createdAt;
-  String? updatedAt;
 
-  BrandModel(
-      {this.id, this.brandName, this.brandImg, this.createdAt, this.updatedAt});
 
-  BrandModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    brandName = json['brandName'];
-    brandImg = json['brandImg'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+import 'brand_data.dart';
+
+class BrandListModel {
+  String? msg;
+  List<BrandData>? brandDataList;
+
+  BrandListModel({this.msg, this.brandDataList});
+
+  BrandListModel.fromJson(Map<String, dynamic> json) {
+    msg = json['msg'];
+    if (json['data'] != null) {
+      brandDataList = <BrandData>[];
+      json['data'].forEach((v) {
+        brandDataList!.add(BrandData.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['brandName'] = this.brandName;
-    data['brandImg'] = this.brandImg;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['msg'] = msg;
+    if (brandDataList != null) {
+      data['data'] = brandDataList!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

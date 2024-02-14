@@ -18,7 +18,7 @@ class ProductData {
   int? brandId;
   String? createdAt;
   String? updatedAt;
-  BrandModel? brand;
+  BrandListModel? brand;
   CategoryListModel? category;
 
   ProductData(
@@ -54,7 +54,7 @@ class ProductData {
     brandId = json['brand_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    brand = json['brand'] != null ? BrandModel.fromJson(json['brand']) : null;
+    brand = json['brand'] != null ? BrandListModel.fromJson(json['brand']) : null;
     category = json['category'] != null
         ? CategoryListModel.fromJson(json['category'])
         : null;

@@ -6,31 +6,31 @@ class AppThemeData{
   static ThemeData lightThemeData= ThemeData(
 
       progressIndicatorTheme:
-      ProgressIndicatorThemeData(color: AppColors.primaryColor),
+      const ProgressIndicatorThemeData(color: AppColors.primaryColor),
       inputDecorationTheme: InputDecorationTheme(
         contentPadding: EdgeInsets.symmetric(vertical: 8,
             horizontal: 16),
         hintStyle: TextStyle(color: Colors.grey.shade400),
         fillColor: Colors.transparent.withOpacity(0),
 
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
             borderSide: BorderSide(
               color: AppColors.primaryColor,
             )),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: AppColors.primaryColor,
             )),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: AppColors.primaryColor,
             )),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.red,
             )),
       ),
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
           titleLarge: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,

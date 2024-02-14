@@ -4,24 +4,31 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../data/models/profile.dart';
+import '../../data/models/complete_profile_model.dart';
+import '../../data/models/readProfileModel.dart';
 import '../ui/screens/auth/verify_email_screen.dart';
 
 class AuthController extends GetxController {
   static String? token;
-  Profile? profile;
+  ReadProfileModel? readProfile;
+  CompleteProfileModel? completeProfile;
 
-  Future<void> saveUserDetails(String t, Profile p) async {
+
+  Future<void> saveUserDetails(
+      String t, ReadProfileModel? r, CompleteProfileModel? p) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString('token', t);
-    await sharedPreferences.setString('profile', jsonEncode(p.toJson()));
+    await sharedPreferences.setString('readProfile', jsonEncode(r?.toJson()));
+    await sharedPreferences.setString(
+        'completeProfile', jsonEncode(p?.toJson()));
     token = t;
-    profile = p;
+    readProfile = r;
+    completeProfile = p;
   }
 
   Future<void> initialize() async {
     token = await _getToken();
-    profile = await _getProfile();
+    readProfile = await _getProfile();
   }
 
   Future<bool> isLoggedIn() async {
@@ -36,13 +43,13 @@ class AuthController extends GetxController {
     return sharedPreferences.getString('token');
   }
 
-  Future<Profile?> _getProfile() async {
+  Future<ReadProfileModel?> _getProfile() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final String? strProfile = sharedPreferences.getString('profile');
     if (strProfile == null) {
       return null;
     } else {
-      return Profile.fromJson(jsonDecode(strProfile));
+      return ReadProfileModel.fromJson(jsonDecode(strProfile));
     }
   }
 

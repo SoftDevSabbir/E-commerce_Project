@@ -1,7 +1,6 @@
-
 import 'package:get/get.dart';
 
-import '../../data/models/profile.dart';
+import '../../data/models/readProfileModel.dart';
 import '../../data/services/network_caller.dart';
 import '../../data/utility/urls.dart';
 
@@ -14,9 +13,9 @@ class ReadProfileDataController extends GetxController {
 
   String get errorMessage => _errorMessage;
 
-  Profile _profile = Profile();
+  ReadProfileModel _readProfile = ReadProfileModel();
 
-  Profile get profile => _profile;
+  ReadProfileModel get readProfile => _readProfile;
 
   bool _isProfileCompleted = false;
 
@@ -25,14 +24,15 @@ class ReadProfileDataController extends GetxController {
   Future<bool> readProfileData(String token) async {
     _inProgress = true;
     update();
-    final response = await NetworkCaller().getRequest(Urls.readProfile, token: token);
+    final response =
+    await NetworkCaller().getRequest(Urls.readProfile, token: token);
     _inProgress = false;
     if (response.isSuccess) {
       final profileData = response.responseData['data'];
-      if (profileData==null) {
+      if (profileData == null) {
         _isProfileCompleted = false;
       } else {
-        _profile = Profile.fromJson(profileData);
+        _readProfile = ReadProfileModel.fromJson(profileData);
         _isProfileCompleted = true;
       }
       update();

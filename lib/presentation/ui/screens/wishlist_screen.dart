@@ -1,3 +1,4 @@
+import 'package:cafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,19 +38,19 @@ class _WishListScreenState extends State<WishListScreen> {
             builder: (showWishListController) {
               if (showWishListController.showWishListInProgress) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CenterCircularProgressIndicator(),
                 );
               }
               return Scaffold(
                 appBar: AppBar(
                   backgroundColor: Colors.white,
-                  title: Text(
+                  title: const Text(
                     'Wish List',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),
                   ),
-                  leading: const BackButton(
-                    color: Colors.black,
-                  ),
+                  leading:  InkWell(
+                      onTap: (){ Get.find<MainBottomNavController>().backToHome();},
+                      child: const Icon(Icons.arrow_back_ios_new))
                 ),
                 body: Padding(
                   padding: const EdgeInsets.all(8.0),

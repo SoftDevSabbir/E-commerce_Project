@@ -32,8 +32,8 @@ class _BannerCarouselState extends State<BannerCarousel> {
               _currentIndex.value = index;
             },
             viewportFraction: 1,
-            // enableInfiniteScroll: false,
-            //autoPlay: true,
+             enableInfiniteScroll: false,
+            autoPlay: true,
           ),
           items: widget.bannerList.map((banner) {
             return Builder(

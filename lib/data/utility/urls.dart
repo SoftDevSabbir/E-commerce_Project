@@ -28,5 +28,5 @@ class Urls {
   static String removeFromWishList(int id) => '$_baseUrl/RemoveWishList/$id';
   static String productReviewList(int id) => '$_baseUrl/ListReviewByProduct/$id';
   static String addProductReview = '$_baseUrl/CreateProductReview';
-
+  static String brandList = "$_baseUrl/BrandList";
 }

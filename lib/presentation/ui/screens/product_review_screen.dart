@@ -68,7 +68,7 @@ class _ReviewInProductListScreenState extends State<ReviewInProductListScreen> {
                   height: 70,
                   decoration: BoxDecoration(
                       color: Colors.lightBlue.shade200,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(20),
                           topLeft: Radius.circular(20))),
                   child: Padding(
@@ -79,12 +79,11 @@ class _ReviewInProductListScreenState extends State<ReviewInProductListScreen> {
                         Text(
                           "Reviews: (${produtReviewListController.productReviewModel.reviewData?.length.toString()})",
                           style:
-                              TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                              const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         InkWell(
                           onTap: () {
-                            Get.to(() => AddProductReviewScreen(
-                                  productId:widget.productId));
+                            Get.to(() => CreateReviewScreen(productId: widget.productId));
                           },
                           child: Container(
                             height: 100,
@@ -125,7 +124,7 @@ class ReviewListCard extends StatelessWidget {
             Icons.person,
             color: Colors.grey,
           ),
-          SizedBox(width: 3),
+          const SizedBox(width: 3),
           Text(
             productReviewData.profile?.cusName ?? "Undefine",
             style: const TextStyle(

@@ -8,10 +8,10 @@ import '../widgets/center_circular_progress_indicator.dart';
 import '../widgets/product_card_item.dart';
 
 class ProductListScreen extends StatefulWidget {
-  const ProductListScreen({super.key, this.category, this.categoryId});
+  const ProductListScreen({super.key, this.title, this.id});
 
-  final String? category;
-  final int? categoryId;
+  final String? title;
+  final int? id;
 
   @override
   State<ProductListScreen> createState() => _ProductListScreenState();
@@ -21,10 +21,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.categoryId != null) {
+    if (widget.id != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Get.find<ProductController>()
-            .getProductList(categoryId: widget.categoryId!);
+            .getProductList(categoryId: widget.id!);
       });
 
     }
@@ -34,7 +34,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.category ?? 'Products'),
+        title: Text(widget.title ?? 'Products'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),

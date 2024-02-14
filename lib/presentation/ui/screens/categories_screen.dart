@@ -29,7 +29,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 Get.find<MainBottomNavController>().backToHome();
               },
               icon: Icon(Icons.arrow_back_ios)),
-          title: Text(
+          title: const Text(
             "Categories",
             style: TextStyle(fontSize: 18),
           ),
@@ -37,20 +37,20 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         body: GetBuilder<CatergoryController>(builder: (categoryController) {
           return Visibility(
             visible: categoryController.inProgress == false,
-            replacement: CenterCircularProgressIndicator(),
+            replacement: const CenterCircularProgressIndicator(),
             child: GridView.builder(
                 itemCount:
                     categoryController.categoryListModel.categoryList?.length ??
                         0,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
                     childAspectRatio: 0.95,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 8),
                 itemBuilder: (context, index) {
                   return FittedBox(
-                      child: CategoryItem(
-                          category: categoryController
+                      child: CategoryBrandItem(
+                          categoryData: categoryController
                               .categoryListModel.categoryList![index]));
                 }),
           );
